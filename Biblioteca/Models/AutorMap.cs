@@ -11,7 +11,7 @@ namespace Biblioteca.Models
 
         public AutorMap()
         {
-            Id(x => x.Id);
+            Id(x => x.Id).Unique().GeneratedBy.Increment();
             Map(x => x.Nome);
             Table("Autor");
         }
