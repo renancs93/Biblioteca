@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace Biblioteca.Models
 {
-    public class AutorMap: ClassMap<Autor>
+    public class LivroMap : ClassMap<Livro>
     {
-        public AutorMap()
+        public LivroMap()
         {
             Id(x => x.Id).GeneratedBy.Identity();
             Map(x => x.Nome).Not.Nullable();
-            HasMany(x => x.Livros);
-            Table("Autor");
+            Map(x => x.QtdEstoque);
+            References(x => x.Autor).Column("idAutor").Not.Nullable();
+            Table("Livro");
         }
 
     }
