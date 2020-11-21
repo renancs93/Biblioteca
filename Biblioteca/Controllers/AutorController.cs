@@ -87,8 +87,21 @@ namespace Biblioteca.Controllers
 
                 if(item != null)
                 {
-                    await _session.DeleteAsync(item);
-                    await transaction.CommitAsync();
+                    try
+                    {
+                        await _session.DeleteAsync(item);
+                        await transaction.CommitAsync();
+                    }
+                    catch(Exception ex)
+                    {
+                        transaction.Rollback();
+
+                        if (ex.InnerException.Message.Contains("violates foreign key constraint"))
+                            return StatusCode(403, new CustomException("Não é possível apagar um Autor associado a algum livro"));
+
+                        return StatusCode(403, new CustomException("Ocorreu um erro inesperado ao apagar autor"));
+                        
+                    }
                 }
                 return Ok();
             }

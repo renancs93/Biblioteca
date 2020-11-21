@@ -60,7 +60,7 @@ namespace Biblioteca.Controllers
 
         }
 
-        // PUT api/<LivroController>/5
+        // PUT api/<AutorController>/5
         [HttpPut("{id}")]
         public async Task<ActionResult<Livro>> Put(int id, [FromBody] Livro livro)
         {
@@ -69,7 +69,7 @@ namespace Biblioteca.Controllers
                 using (ITransaction transaction = _session.BeginTransaction())
                 {
                     // Verifica se existe o objeto a ser atualizado
-                    var item = Get(id);// await _session.GetAsync<Autor>(id);
+                    var item = await _session.LoadAsync<Livro>(id);// await _session.GetAsync<Autor>(id);
 
                     if (item == null)
                         return NotFound();
@@ -84,6 +84,34 @@ namespace Biblioteca.Controllers
             return livro;
         }
 
+        //[HttpPatch("{id}")]
+        //public async Task<ActionResult<Livro>> Patch(int id, [FromBody] JsonPatchDocument<Livro> patch)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        using (ITransaction transaction = _session.BeginTransaction())
+        //        {
+        //            // Verifica se existe o objeto a ser atualizado
+        //            //var item = Get(id);
+        //            var item = await _session.LoadAsync<Livro>(id);
+
+        //            if (item == null)
+        //                return NotFound();
+
+        //            patch.ApplyTo(item, (Microsoft.AspNetCore.JsonPatch.Adapters.IObjectAdapter)ModelState);
+
+        //            if(!ModelState.IsValid)
+        //                return BadRequest();
+
+        //            //livro.Id = id;
+        //            await _session.MergeAsync(patch);
+        //            await transaction.CommitAsync();
+        //            return item;
+        //        }
+        //    }
+        //    return BadRequest();
+        //}
+
         // DELETE api/<LivroController>/5
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
@@ -93,10 +121,15 @@ namespace Biblioteca.Controllers
                 // Carrega o objeto a ser deletado
                 var item = await _session.GetAsync<Livro>(id);
 
-                if (item != null)
+                try
                 {
                     await _session.DeleteAsync(item);
                     await transaction.CommitAsync();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    return StatusCode(403, new CustomException("Ocorreu um erro inesperado ao apagar livro"));
                 }
                 return Ok();
             }

@@ -43,7 +43,9 @@ namespace Biblioteca
                 return _sessionFactory.OpenSession();
             });
 
+            
             services.AddControllers();
+
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp";
