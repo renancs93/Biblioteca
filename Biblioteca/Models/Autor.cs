@@ -11,7 +11,7 @@ namespace Biblioteca.Models
         public virtual int Id { get; set; }
         [Required(ErrorMessage = "Um nome é obrigatório")]
         public virtual string Nome { get; set; }
-        public virtual IList<Livro> Livros { get; set; }
+        //public virtual IList<Livro> Livros { get; set; }
 
         //public Autor()
         //{

@@ -44,6 +44,13 @@ namespace Biblioteca.Controllers
             {
                 using (ITransaction transaction = _session.BeginTransaction())
                 {
+                    // Carregar Autor 
+                    if(livro.idAutor > 0)
+                    {
+                        Autor autor = await _session.LoadAsync<Autor>(livro.idAutor);
+                        livro.Autor = autor;
+                    }
+
                     await _session.SaveAsync(livro);
                     await transaction.CommitAsync();
                     return livro;

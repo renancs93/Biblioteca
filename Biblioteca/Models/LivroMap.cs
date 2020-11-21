@@ -13,7 +13,7 @@ namespace Biblioteca.Models
             Id(x => x.Id).GeneratedBy.Identity();
             Map(x => x.Nome).Not.Nullable();
             Map(x => x.QtdEstoque);
-            References(x => x.Autor).Column("idAutor").Not.Nullable();
+            References(x => x.Autor).Column("idAutor").Fetch.Join();
             Table("Livro");
         }
 

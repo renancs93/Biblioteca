@@ -12,7 +12,6 @@ namespace Biblioteca.Models
         {
             Id(x => x.Id).GeneratedBy.Identity();
             Map(x => x.Nome).Not.Nullable();
-            HasMany(x => x.Livros);
             Table("Autor");
         }
 
