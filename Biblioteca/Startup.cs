@@ -45,6 +45,8 @@ namespace Biblioteca
             {
                 configuration.RootPath = "ClientApp";
             });
+
+            services.AddCors(); // Cors
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,6 +59,10 @@ namespace Biblioteca
 
             app.UseRouting();
             app.UseSpaStaticFiles();
+
+            // habilitando Cors para qualquer origem
+            app.UseCors(option => option.AllowAnyOrigin());
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
