@@ -46,7 +46,8 @@ namespace Biblioteca
                 configuration.RootPath = "ClientApp";
             });
 
-            services.AddCors(); // Cors
+            // Habilitado Cors para qualquer Origem e outros critérios
+            services.AddCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,8 +61,10 @@ namespace Biblioteca
             app.UseRouting();
             app.UseSpaStaticFiles();
 
-            // habilitando Cors para qualquer origem
+            // Habilitando Cors para qualquer Origem e Método
+            //app.UseCors(option => option.WithOrigins("http://localhost:50598/", "http://localhost:8080/"));
             app.UseCors(option => option.AllowAnyOrigin());
+            app.UseCors(option => option.AllowAnyMethod());
 
             app.UseAuthorization();
 
