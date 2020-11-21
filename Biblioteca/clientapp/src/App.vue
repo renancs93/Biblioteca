@@ -35,4 +35,13 @@ li {
   justify-content: space-between;
 }
 
+.error{
+  color: red;
+  font-size: small;
+}
+
+.center {
+  align-items: center
+}
+
 </style>

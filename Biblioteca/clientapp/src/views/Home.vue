@@ -31,7 +31,6 @@ export default {
       fetch("http://localhost:50598/api/livro")
         .then((response) => response.json())
         .then((data) => {
-          window.console.log(data);
           this.livros = data;
         });
     },

@@ -5,17 +5,22 @@
       <h1>Autores</h1>
       <fieldset style="display: inline-block">
         <legend>Novo Cadastro</legend>
-        <label>Nome do Autor:</label>
-        <input v-model="NovoAutor.nome" class="input" />
-        <Button
-          texto="Cadastrar"
-          v-on:click.native.prevent="cadastrar()"
-        ></Button>
+        <div>
+          <label>Nome do Autor:</label>
+          <input v-model="NovoAutor.nome" class="input" />
+          <Button
+            texto="Cadastrar"
+            v-on:click.native.prevent="cadastrar()"
+          ></Button>
+        </div>
+        <label class="error">
+          {{ msgErro }}
+        </label>
       </fieldset>
       <ul>
         <li
-          class="list flex flex-space"
-          v-for="autor in autores"
+          class="list flex flex-space center"
+          v-for="(autor, index) in autores"
           :key="autor.id"
         >
           <div>
@@ -23,11 +28,26 @@
             <label>Nome: {{ autor.nome }}</label>
           </div>
           <div>
-            <Button texto="Editar"></Button>
-            <Button texto="Excluir"></Button>
+            <Button
+              texto="Editar"
+              v-on:click.native.prevent="showModalEdit(autor)"
+            ></Button>
+            <Button
+              texto="Excluir"
+              v-on:click.native.prevent="excluir(autor, index)"
+            ></Button>
           </div>
         </li>
       </ul>
+
+      <!-- Modal -->
+      <modal v-if="showModal" @salvar="editar()" @cancelar="showModal = false">
+        <h3 slot="header">Editar Autor</h3>
+        <div slot="body">
+          <Label>Nome:</Label>
+          <input class="input" v-model="EditAutor.nome" />
+        </div>
+      </modal>
     </div>
   </div>
 </template>
@@ -35,53 +55,118 @@
 <script>
 import Header from "@/components/Header.vue";
 import Button from "@/components/Button.vue";
+import Modal from "@/components/Modal.vue";
 
 export default {
   name: "Autores",
   components: {
     Header,
     Button,
+    Modal,
   },
   data() {
     return {
+      msgErro: "",
+      showModal: false,
       autores: [],
       NovoAutor: {
-        Nome: "",
-        Id: 0,
+        nome: "",
+        id: 0,
+      },
+      EditAutor: {
+        nome: "",
+        id: 0,
       },
     };
   },
   methods: {
-    // http://localhost:50598/
-    carregarDados: function () {
-      fetch("http://localhost:50598/api/autor")
+    // FUNÇÃO DE BUSCA TODOS OS aUTORES
+    carregarDados: async function () {
+      this.msgErro = "";
+
+      await fetch("http://localhost:50598/api/autor")
         .then((response) => response.json())
         .then((data) => {
-          window.console.log(data);
           this.autores = data;
         });
     },
-    cadastrar: async function () {
-      if (this.NovoAutor.nome.trim() == "") {
-        window.console.log("Vazio");
-      } else {
-        window.console.log("Cadastrar");
-        //window.console.log(JSON.stringify(this.NovoAutor));
+    // FUNÇÃO DE EXCLUSÃO
+    excluir: async function (autor, index) {
+      
+      var config = {
+        method: "DELETE",
+        headers: new Headers({
+          "Content-Type": "application/json; charset=UTF-8",
+        }),
+      };
 
+      await fetch(`http://localhost:50598/api/autor/${autor.id}`, config)
+        .then( async (response) => {
+          if (response.ok) {
+            this.autores.splice(index, 1);
+          } else {
+            const res = await response.json();
+            if (res.message != null) this.msgErro = res.message;
+          }
+        })
+        .catch((error) => {
+          this.msgErro = error.message;
+        });
+    },
+    // FUNÇÃO DE EDIÇÃO
+    editar: async function () {
+      if (this.EditAutor.nome.trim() != "") {
         var config = {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
+          method: "PUT",
+          body: JSON.stringify(this.EditAutor),
+          headers: new Headers({
+            "Content-Type": "application/json; charset=UTF-8",
+          }),
+        };
+
+        await fetch(
+          `http://localhost:50598/api/autor/${this.EditAutor.id}`,
+          config
+        )
+          .then((response) => response.json())
+          .then(() => {
+            this.carregarDados();
+          })
+          .catch((error) => {
+            window.console.log(error);
+            //this.msgErro = error.message;
+          });
+      }
+
+      this.showModal = !this.showModal;
+    },
+    // MODAL DE EDIÇÃO
+    showModalEdit: async function (autor) {
+      this.EditAutor = Object.assign({}, autor);
+      this.showModal = !this.showModal;
+    },
+    // FUNÇÃO DE CADASTRO
+    cadastrar: async function () {
+      this.msgErro = "";
+
+      if (this.NovoAutor.nome.trim() == "") {
+        this.msgErro = "Nome não pode ser vazio";
+      } else {
+        var config = {
           method: "POST",
           body: JSON.stringify(this.NovoAutor),
+          headers: new Headers({
+            "Content-Type": "application/json; charset=UTF-8",
+          }),
         };
 
         await fetch("http://localhost:50598/api/autor", config)
           .then((response) => response.json())
           .then((data) => {
-            window.console.log(data);
-            this.autores.push(data);
+            this.autores.unshift(data);
+          })
+          .catch((error) => {
+            this.msgErro = error.message;
           });
 
         this.NovoAutor.nome = "";
