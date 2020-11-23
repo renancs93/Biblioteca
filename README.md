@@ -45,12 +45,12 @@ npm install
 ```
 
 ## Iniciando a API
-- Dar um play na aplicação pelo Visual Studio com a solução Biblioteca aberta, o servidor do IIS irá rodar em background (API deve estar na porta 50598)
+- Dar um play na aplicação pelo Visual Studio com a solução Biblioteca aberta, o servidor do IIS irá rodar e o navegador irá abrir (API deve estar na porta 50598), juntamente com a aplicação web, no seguinte endereço: http://localhost:50598/
 
-## Rodando a aplicação Web
-Também na pasta Biblioteca/clientapp pelo terminal voce pode executar o comando:
+## Rodando a aplicação Web manualmente (caso a opção anterior não rode a aplicação web automaticamente)
+Com a API rodando, acesse a pasta pasta Biblioteca/clientapp pelo terminal e execute o seguinte o comando:
 ```
 npm run serve
 ```
 
-Após isso só abrir no navegador a aplicação, geralmente estará acessível provavelmente em alguns dos seguintes endereços: http://localhost:8080/ http://localhost:8081/
+Será informado no terminal o endereço da aplicação web, geralmente estará acessível nos seguintes endereços: http://localhost:8080/ ou http://localhost:8081/
