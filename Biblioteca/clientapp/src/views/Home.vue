@@ -3,6 +3,9 @@
     <Header></Header>
     <div class="home">
       <h1>Listagem de Livros</h1>
+      <div class="lstVazia" v-show="livros.length == 0">
+        AINDA NÃO EXISTEM LIVROS CADASTRADOS
+      </div>
       <div class="lista-livros">
         <LivroItem :livro="item" v-for="item in livros" :key="item.id"></LivroItem>
       </div>

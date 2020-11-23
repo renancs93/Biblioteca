@@ -13,10 +13,13 @@
             v-on:click.native.prevent="cadastrar()"
           ></Button>
         </div>
-        <label class="error">
-          {{ msgErro }}
-        </label>
       </fieldset>
+      <div class="error">
+        {{ msgErro }}
+      </div>
+      <div class="lstVazia" v-show="autores.length == 0">
+        AINDA NÃO EXISTEM AUTORES CADASTRADOS
+      </div>
       <ul>
         <li
           class="list flex flex-space center"
@@ -80,7 +83,7 @@ export default {
     };
   },
   methods: {
-    // FUNÇÃO DE BUSCA TODOS OS aUTORES
+    // FUNÇÃO DE BUSCA TODOS OS AUTORES
     carregarDados: async function () {
       this.msgErro = "";
 
@@ -92,7 +95,6 @@ export default {
     },
     // FUNÇÃO DE EXCLUSÃO
     excluir: async function (autor, index) {
-      
       var config = {
         method: "DELETE",
         headers: new Headers({
@@ -101,7 +103,7 @@ export default {
       };
 
       await fetch(`http://localhost:50598/api/autor/${autor.id}`, config)
-        .then( async (response) => {
+        .then(async (response) => {
           if (response.ok) {
             this.autores.splice(index, 1);
           } else {

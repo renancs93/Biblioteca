@@ -37,7 +37,13 @@ li {
 
 .error{
   color: red;
-  font-size: small;
+  text-align: center;
+}
+
+.lstVazia{
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
 }
 
 .center {
