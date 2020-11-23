@@ -14,6 +14,7 @@ namespace Biblioteca.Models
             Map(x => x.Nome).Not.Nullable();
             Map(x => x.QtdEstoque);
             References(x => x.Autor).Column("idAutor").Fetch.Join();
+            DynamicUpdate();
             Table("Livro");
         }
 

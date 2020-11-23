@@ -74,10 +74,20 @@ namespace Biblioteca.Controllers
                     if (item == null)
                         return NotFound();
 
-                    livro.Id = id;
-                    await _session.MergeAsync(livro);
+                    if(livro.idAutor > 0)
+                    {
+                        var newAutor = await _session.LoadAsync<Autor>(livro.idAutor);
+                        item.Autor = newAutor;
+                    }
+                    else
+                        item.Autor = null;
+
+                    item.QtdEstoque = livro.QtdEstoque;
+                    item.Nome = livro.Nome;
+
+                    await _session.MergeAsync(item);
                     await transaction.CommitAsync();
-                    return livro;
+                    return item;
 
                 }
             }
