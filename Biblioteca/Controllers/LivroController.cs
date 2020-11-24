@@ -25,8 +25,7 @@ namespace Biblioteca.Controllers
         [HttpGet]
         public IEnumerable<Livro> Get()
         {
-            //return _session.CreateCriteria<Livro>().SetFetchMode("Autor", FetchMode.Eager).List<Livro>();
-            return _session.Query<Livro>();
+            return _session.Query<Livro>().OrderBy(item => item.Nome);
         }
 
         // GET api/<LivroController>/5
@@ -58,6 +57,41 @@ namespace Biblioteca.Controllers
             }
             return livro;
 
+        }
+
+        [HttpPost]
+        [Route("comprar")]
+        public async Task<ActionResult> Comprar([FromBody] Livro livro)
+        {
+            if (ModelState.IsValid)
+            {
+                using (ITransaction transaction = _session.BeginTransaction())
+                {
+                    // Verifica se existe o objeto a ser atualizado
+                    var item = await _session.LoadAsync<Livro>(livro.Id);
+
+                    if (item == null)
+                        return NotFound();
+
+
+                    if (item.QtdEstoque > 0)
+                    {
+                        item.QtdEstoque = item.QtdEstoque - 1;
+
+                        await _session.FlushAsync();
+                        await transaction.CommitAsync();
+                        return Ok();
+                    }
+                    else
+                    {
+                        transaction.Rollback();
+                        return StatusCode(403, new CustomException("Não existem mais deste livro para compra, estoque zerado!"));
+                    }
+                    
+
+                }
+            }
+            return Forbid();
         }
 
         // PUT api/<AutorController>/5
@@ -94,34 +128,6 @@ namespace Biblioteca.Controllers
             return livro;
         }
 
-        //[HttpPatch("{id}")]
-        //public async Task<ActionResult<Livro>> Patch(int id, [FromBody] JsonPatchDocument<Livro> patch)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        using (ITransaction transaction = _session.BeginTransaction())
-        //        {
-        //            // Verifica se existe o objeto a ser atualizado
-        //            //var item = Get(id);
-        //            var item = await _session.LoadAsync<Livro>(id);
-
-        //            if (item == null)
-        //                return NotFound();
-
-        //            patch.ApplyTo(item, (Microsoft.AspNetCore.JsonPatch.Adapters.IObjectAdapter)ModelState);
-
-        //            if(!ModelState.IsValid)
-        //                return BadRequest();
-
-        //            //livro.Id = id;
-        //            await _session.MergeAsync(patch);
-        //            await transaction.CommitAsync();
-        //            return item;
-        //        }
-        //    }
-        //    return BadRequest();
-        //}
-
         // DELETE api/<LivroController>/5
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
@@ -139,7 +145,7 @@ namespace Biblioteca.Controllers
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    return StatusCode(403, new CustomException("Ocorreu um erro inesperado ao apagar livro"));
+                    return StatusCode(403, new CustomException("Ocorreu um erro inesperado ao apagar livro!"));
                 }
                 return Ok();
             }

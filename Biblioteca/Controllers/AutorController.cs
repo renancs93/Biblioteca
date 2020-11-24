@@ -26,7 +26,7 @@ namespace Biblioteca.Controllers
         [HttpGet]
         public IEnumerable<Autor> Get()
         {
-            return _session.Query<Autor>().ToArray();
+            return _session.Query<Autor>().OrderBy(item => item.Nome);
         }
 
         // GET api/<AutorController>/5
@@ -61,7 +61,7 @@ namespace Biblioteca.Controllers
                 using (ITransaction transaction = _session.BeginTransaction())
                 {
                     // Verifica se existe o objeto a ser atualizado
-                    var item = Get(id);// await _session.GetAsync<Autor>(id);
+                    var item = Get(id);
 
                     if(item == null)
                         return NotFound();
@@ -97,9 +97,9 @@ namespace Biblioteca.Controllers
                         transaction.Rollback();
 
                         if (ex.InnerException.Message.Contains("violates foreign key constraint"))
-                            return StatusCode(403, new CustomException("Não é possível apagar um Autor associado a algum livro"));
+                            return StatusCode(403, new CustomException("Não é possível apagar um Autor associado a um livro!"));
 
-                        return StatusCode(403, new CustomException("Ocorreu um erro inesperado ao apagar autor"));
+                        return StatusCode(403, new CustomException("Ocorreu um erro inesperado ao apagar autor!"));
                         
                     }
                 }

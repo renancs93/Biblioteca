@@ -2,7 +2,9 @@
   <div class="card">
     <div class="conteudo">
       <div class="titulo">
-        {{ livro.nome }}
+        <label>
+          {{ livro.nome }}
+        </label>
       </div>
       <div class="autor">
         Autor:
@@ -10,7 +12,7 @@
       </div>
       <div class="estoque">Estoque: {{ livro.qtdEstoque }}</div>
 
-      <button class="button">COMPRAR</button>
+      <button class="button" @click.prevent="$emit('comprar')">COMPRAR</button>
     </div>
   </div>
 </template>
@@ -52,11 +54,13 @@ export default {
 
 .titulo {
   font-weight: bold;
-  font-size: medium;
+  font-size: large;
+  text-decoration: underline;
 }
 
 .autor {
   font-style: italic;
+  font-size: medium;
 }
 
 .estoque {

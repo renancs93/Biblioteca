@@ -8,13 +8,6 @@
         <div>
           <label>Nome do Livro:</label>
           <input v-model="NovoLivro.nome" class="input" />
-          <label>Qtde. Estoque:</label>
-          <input
-            type="number"
-            min="0"
-            v-model.number="NovoLivro.qtdEstoque"
-            class="input"
-          />
           <label for="ddlAutores">Autor:</label>
           <select
             v-model="NovoLivro.idAutor"
@@ -26,6 +19,13 @@
               {{ autor.nome }}
             </option>
           </select>
+          <label>Qtde. Estoque:</label>
+          <input
+            type="number"
+            min="0"
+            v-model.number="NovoLivro.qtdEstoque"
+            class="input"
+          />
           <Button
             texto="Cadastrar"
             v-on:click.native.prevent="cadastrar()"
@@ -47,13 +47,12 @@
           <div>
             <label>ID: {{ livro.id }}</label> |
             <label>Livro: {{ livro.nome }}</label> |
-            <label>Estoque: {{ livro.qtdEstoque }}</label> |
             <label
               >Autor:
               {{
                 livro.autor != null ? livro.autor.nome : "Autor Desconhecido"
-              }}</label
-            >
+              }}</label> |
+            <label>Estoque: {{ livro.qtdEstoque }}</label>
           </div>
           <div>
             <Button
@@ -74,17 +73,11 @@
         <div class="flex" slot="body">
           <div class="labels">
             <Label>Nome:</Label>
-            <Label>Qtde. Estoque:</Label>
             <label for="ddlAutores">Autor:</label>
+            <Label>Qtde. Estoque:</Label>
           </div>
           <div class="campos">
             <input class="input" v-model="EditLivro.nome" />
-            <input
-              type="number"
-              min="0"
-              v-model.number="EditLivro.qtdEstoque"
-              class="input"
-            />
             <select
               v-model="EditLivro.idAutor"
               class="select"
@@ -98,6 +91,12 @@
                 {{ autor.nome }}
               </option>
             </select>
+            <input
+              type="number"
+              min="0"
+              v-model.number="EditLivro.qtdEstoque"
+              class="input"
+            />
           </div>
         </div>
       </modal>
@@ -158,11 +157,9 @@ export default {
     },
     // MODAL DE EDIÇÃO
     showModalEdit: async function (livro) {
-
-      window.console.log(livro);
       this.EditLivro = Object.assign({}, livro);
       // set autor
-      this.EditLivro.idAutor = livro.autor != null? livro.autor.id : 0;
+      this.EditLivro.idAutor = livro.autor != null ? livro.autor.id : 0;
       this.showModal = !this.showModal;
     },
     // FUNÇÃO DE CADASTRO
@@ -223,7 +220,6 @@ export default {
     },
     // FUNÇÃO DE EXCLUSÃO
     excluir: async function (livro, index) {
-      
       var config = {
         method: "DELETE",
         headers: new Headers({
@@ -232,7 +228,7 @@ export default {
       };
 
       await fetch(`http://localhost:50598/api/livro/${livro.id}`, config)
-        .then( async (response) => {
+        .then(async (response) => {
           if (response.ok) {
             this.livros.splice(index, 1);
           } else {
@@ -290,19 +286,18 @@ export default {
   padding: 0 5px;
 }
 
-.labels{
+.labels {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
 
-.labels > label{
+.labels > label {
   height: 25px;
 }
 
-.campos{
+.campos {
   display: flex;
   flex-direction: column;
 }
-
 </style>
