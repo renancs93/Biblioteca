@@ -166,10 +166,13 @@ export default {
     cadastrar: async function () {
       this.msgErro = "";
 
-      if (this.NovoLivro.nome.trim() == "" || this.NovoLivro.qtdEstoque < 0) {
-        this.msgErro =
-          "Nome não pode ser vazio ou quantidade de estoque negativa";
-      } else {
+      if (this.NovoLivro.nome.trim() == "") {
+        this.msgErro = "Nome do livro não pode ser vazio!";
+      }
+      else if (this.NovoLivro.qtdEstoque < 0) {
+          this.msgErro = "Quantidade do estoque não pode ser negativa!";
+      }
+      else {
         var config = {
           method: "POST",
           body: JSON.stringify(this.NovoLivro),

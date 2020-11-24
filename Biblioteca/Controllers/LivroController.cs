@@ -142,7 +142,7 @@ namespace Biblioteca.Controllers
                     await _session.DeleteAsync(item);
                     await transaction.CommitAsync();
                 }
-                catch (Exception ex)
+                catch
                 {
                     transaction.Rollback();
                     return StatusCode(403, new CustomException("Ocorreu um erro inesperado ao apagar livro!"));
