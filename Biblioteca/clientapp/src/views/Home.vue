@@ -46,7 +46,7 @@ export default {
     carregarDados: function () {
       this.msgErro = "";
 
-      fetch("http://localhost:50598/api/livro")
+      fetch(`${this.$http}/livro`)
         .then((response) => response.json())
         .then((data) => {
           this.livros = data;
@@ -64,7 +64,7 @@ export default {
         }),
       };
 
-      await fetch("http://localhost:50598/api/livro/comprar", config)
+      await fetch(`${this.$http}/livro/comprar`, config)
         .then(async (response) => {
           if (response.ok) {
             this.carregarDados();

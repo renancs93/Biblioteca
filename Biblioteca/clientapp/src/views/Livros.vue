@@ -51,7 +51,9 @@
               >Autor:
               {{
                 livro.autor != null ? livro.autor.nome : "Autor Desconhecido"
-              }}</label> |
+              }}</label
+            >
+            |
             <label>Estoque: {{ livro.qtdEstoque }}</label>
           </div>
           <div>
@@ -138,7 +140,7 @@ export default {
   },
   methods: {
     carregarDados: function () {
-      fetch("http://localhost:50598/api/livro")
+      fetch(`${this.$http}/livro`)
         .then((response) => response.json())
         .then((data) => {
           this.livros = data;
@@ -147,7 +149,7 @@ export default {
     carregarDadosAutores: async function () {
       this.msgErro = "";
 
-      await fetch("http://localhost:50598/api/autor")
+      await fetch(`${this.$http}/autor`)
         .then((response) => response.json())
         .then((data) => {
           data.map((item) => {
@@ -168,11 +170,9 @@ export default {
 
       if (this.NovoLivro.nome.trim() == "") {
         this.msgErro = "Nome do livro não pode ser vazio!";
-      }
-      else if (this.NovoLivro.qtdEstoque < 0) {
-          this.msgErro = "Quantidade do estoque não pode ser negativa!";
-      }
-      else {
+      } else if (this.NovoLivro.qtdEstoque < 0) {
+        this.msgErro = "Quantidade do estoque não pode ser negativa!";
+      } else {
         var config = {
           method: "POST",
           body: JSON.stringify(this.NovoLivro),
@@ -181,7 +181,7 @@ export default {
           }),
         };
 
-        await fetch("http://localhost:50598/api/livro", config)
+        await fetch(`${this.$http}/livro`, config)
           .then(async (response) => await response.json())
           .then((data) => {
             this.livros.unshift(data);
@@ -205,10 +205,7 @@ export default {
           }),
         };
 
-        await fetch(
-          `http://localhost:50598/api/livro/${this.EditLivro.id}`,
-          config
-        )
+        await fetch(`${this.$http}/livro/${this.EditLivro.id}`, config)
           .then((response) => response.json())
           .then(() => {
             this.carregarDados();
@@ -230,7 +227,7 @@ export default {
         }),
       };
 
-      await fetch(`http://localhost:50598/api/livro/${livro.id}`, config)
+      await fetch(`${this.$http}/livro/${livro.id}`, config)
         .then(async (response) => {
           if (response.ok) {
             this.livros.splice(index, 1);

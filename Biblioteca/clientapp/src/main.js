@@ -3,6 +3,7 @@ import App from './App.vue'
 import router from './router'
 
 Vue.config.productionTip = false
+Vue.prototype.$http = "http://localhost:50598/api";
 
 new Vue({
   router,

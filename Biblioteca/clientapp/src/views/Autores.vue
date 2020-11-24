@@ -87,7 +87,7 @@ export default {
     carregarDados: async function () {
       this.msgErro = "";
 
-      await fetch("http://localhost:50598/api/autor")
+      await fetch(`${this.$http}/autor`)
         .then((response) => response.json())
         .then((data) => {
           this.autores = data;
@@ -102,7 +102,7 @@ export default {
         }),
       };
 
-      await fetch(`http://localhost:50598/api/autor/${autor.id}`, config)
+      await fetch(`${this.$http}/autor/${autor.id}`, config)
         .then(async (response) => {
           if (response.ok) {
             this.autores.splice(index, 1);
@@ -126,10 +126,7 @@ export default {
           }),
         };
 
-        await fetch(
-          `http://localhost:50598/api/autor/${this.EditAutor.id}`,
-          config
-        )
+        await fetch(`${this.$http}/autor/${this.EditAutor.id}`, config)
           .then((response) => response.json())
           .then(() => {
             this.carregarDados();
@@ -162,7 +159,7 @@ export default {
           }),
         };
 
-        await fetch("http://localhost:50598/api/autor", config)
+        await fetch(`${this.$http}/autor`, config)
           .then((response) => response.json())
           .then((data) => {
             this.autores.unshift(data);
