@@ -1,0 +1,271 @@
+{
+	"info": {
+		"_postman_id": "4de8146e-2a18-4aed-8250-8447cda0bc61",
+		"name": "Biblioteca",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Autor",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Autor 4\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:50598/api/autor",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "50598",
+							"path": [
+								"api",
+								"autor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:50598/api/autor",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "50598",
+							"path": [
+								"api",
+								"autor"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "FindByID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:50598/api/autor/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "50598",
+							"path": [
+								"api",
+								"autor",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"Nome\": \"Renan Costa da Silva\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:50598/api/autor/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "50598",
+							"path": [
+								"api",
+								"autor",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:50598/api/autor/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "50598",
+							"path": [
+								"api",
+								"autor",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Teste",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:50598/weatherforecast",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "50598",
+							"path": [
+								"weatherforecast"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Livros",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Livro 5\",\r\n    \"qtdEstoque\": 8,\r\n    \"idAutor\": 14\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:50598/api/livro",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "50598",
+							"path": [
+								"api",
+								"livro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comprar",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 35\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:50598/api/livro/comprar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "50598",
+							"path": [
+								"api",
+								"livro",
+								"comprar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:50598/api/livro",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "50598",
+							"path": [
+								"api",
+								"livro"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Item",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\":\"Livro Teste\",\r\n    \"qtdEstoque\": 5\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:50598/api/livro/16",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "50598",
+							"path": [
+								"api",
+								"livro",
+								"16"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
