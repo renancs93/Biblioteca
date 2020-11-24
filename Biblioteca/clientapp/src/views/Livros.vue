@@ -144,6 +144,10 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           this.livros = data;
+        })
+        .catch((error) => {
+          if (error == "TypeError: Failed to fetch")
+            this.msgErro = "Erro ao consultar dados ao servidor";
         });
     },
     carregarDadosAutores: async function () {

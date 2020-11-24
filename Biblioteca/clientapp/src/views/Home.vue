@@ -3,14 +3,14 @@
     <Header></Header>
     <div class="home">
       <h1>Listagem de Livros</h1>
-      <div class="lstVazia" v-show="livros.length == 0">
-        AINDA NÃO EXISTEM LIVROS CADASTRADOS
-      </div>
       <div class="mensagem">
         {{ msg }}
       </div>
       <div class="error">
         {{ msgErro }}
+      </div>
+      <div class="lstVazia" v-show="livros.length == 0">
+        AINDA NÃO EXISTEM LIVROS CADASTRADOS
       </div>
       <div class="lista-livros">
         <LivroItem
@@ -50,6 +50,10 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           this.livros = data;
+        })
+        .catch((error) => {
+          if (error == "TypeError: Failed to fetch")
+            this.msgErro = "Erro ao consultar dados ao servidor";
         });
     },
     comprar: async function (livro) {

@@ -91,6 +91,10 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           this.autores = data;
+        })
+        .catch((error) => {
+          if (error == "TypeError: Failed to fetch")
+            this.msgErro = "Erro ao consultar dados ao servidor";
         });
     },
     // FUNÇÃO DE EXCLUSÃO
