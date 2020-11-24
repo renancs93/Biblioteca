@@ -69,11 +69,11 @@ export default {
           if (response.ok) {
             this.carregarDados();
             this.msg = "Compra realizada com sucesso!";
-          }
-          else {
-            if(response.status == 403)
-              this.msgErro = "Não existem mais deste livro para compra, estoque zerado!";
-            else
+          } else {
+            if (response.status == 403) {
+              var ret = await response.json();
+              this.msgErro = ret.message;
+            } else
               this.msgErro = "Ocorreu um erro inesperado ao realizar comprar!";
           }
         })
